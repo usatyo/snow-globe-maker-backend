@@ -2,11 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type CitiesJson struct {
@@ -50,6 +50,8 @@ func main() {
 	e := echo.New()
 	e.Static("/public", "public")
 
+	e.Use(middleware.CORSWithConfig(middleware.DefaultCORSConfig))
+
 	g := e.Group("/api")
 	g.GET("/search-city-model", func(c echo.Context) error {
 		var searchParams SearchCityModelParams
@@ -61,8 +63,6 @@ func main() {
 				Items:        nil,
 			})
 		}
-
-		fmt.Println(searchParams)
 
 		resultCities := searchCityModel(searchParams)
 
