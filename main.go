@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -61,8 +60,6 @@ func main() {
 				Items:        nil,
 			})
 		}
-
-		fmt.Println(searchParams)
 
 		resultCities := searchCityModel(searchParams)
 
