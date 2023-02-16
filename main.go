@@ -90,15 +90,27 @@ func initSapporoCities() {
 func searchCityModel(searchParams SearchCityModelParams) []ResponseModelInfo {
 	urlList := make([]ResponseModelInfo, 0)
 	for _, modelInfo := range sapporoCities.ModelInfo {
-		avePos := []float64{
-			(modelInfo.Lowerpos[0] + modelInfo.Upperpos[0]) / 2,
-			(modelInfo.Lowerpos[1] + modelInfo.Upperpos[1]) / 2,
-			(modelInfo.Lowerpos[2] + modelInfo.Upperpos[2]) / 2,
-		}
+		llposDist := calcDist(
+			modelInfo.Lowerpos[0], modelInfo.Lowerpos[1], searchParams.Alt,
+			searchParams.Latitude, searchParams.Longitude, searchParams.Alt,
+		)
+		ulposDist := calcDist(
+			modelInfo.Upperpos[0], modelInfo.Lowerpos[1], searchParams.Alt,
+			searchParams.Latitude, searchParams.Longitude, searchParams.Alt,
+		)
+		uuposDist := calcDist(
+			modelInfo.Upperpos[0], modelInfo.Upperpos[1], searchParams.Alt,
+			searchParams.Latitude, searchParams.Longitude, searchParams.Alt,
+		)
+		luposDist := calcDist(
+			modelInfo.Lowerpos[0], modelInfo.Upperpos[1], searchParams.Alt,
+			searchParams.Latitude, searchParams.Longitude, searchParams.Alt,
+		)
 
-		dist := calcDist(avePos[0], avePos[1], avePos[2], searchParams.Latitude, searchParams.Longitude, searchParams.Alt)
-
-		if dist < searchParams.Radius {
+		if llposDist < searchParams.Radius &&
+			ulposDist < searchParams.Radius &&
+			uuposDist < searchParams.Radius &&
+			luposDist < searchParams.Radius {
 			urlList = append(urlList, ResponseModelInfo{
 				Url:      baseURL + "/public/model/sapporo_1k/" + modelInfo.Filename,
 				Lowerpos: modelInfo.Lowerpos,
