@@ -90,15 +90,24 @@ func initSapporoCities() {
 func searchCityModel(searchParams SearchCityModelParams) []ResponseModelInfo {
 	urlList := make([]ResponseModelInfo, 0)
 	for _, modelInfo := range sapporoCities.ModelInfo {
-		avePos := []float64{
-			(modelInfo.Lowerpos[0] + modelInfo.Upperpos[0]) / 2,
-			(modelInfo.Lowerpos[1] + modelInfo.Upperpos[1]) / 2,
-			(modelInfo.Lowerpos[2] + modelInfo.Upperpos[2]) / 2,
-		}
 
-		dist := calcDist(avePos[0], avePos[1], avePos[2], searchParams.Latitude, searchParams.Longitude, searchParams.Alt)
+		lowerDist := calcDist(modelInfo.Lowerpos[0],
+			modelInfo.Lowerpos[1],
+			modelInfo.Lowerpos[2],
+			searchParams.Latitude,
+			searchParams.Longitude,
+			searchParams.Alt,
+		)
 
-		if dist < searchParams.Radius {
+		upperDist := calcDist(modelInfo.Upperpos[0],
+			modelInfo.Upperpos[1],
+			modelInfo.Upperpos[2],
+			searchParams.Latitude,
+			searchParams.Longitude,
+			searchParams.Alt,
+		)
+
+		if lowerDist < searchParams.Radius && upperDist < searchParams.Radius {
 			urlList = append(urlList, ResponseModelInfo{
 				Url:      baseURL + "/public/model/sapporo_1k/" + modelInfo.Filename,
 				Lowerpos: modelInfo.Lowerpos,
