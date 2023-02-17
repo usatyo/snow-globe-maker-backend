@@ -112,7 +112,7 @@ func searchCityModel(searchParams SearchCityModelParams) []ResponseModelInfo {
 			uuposDist < searchParams.Radius &&
 			luposDist < searchParams.Radius {
 			urlList = append(urlList, ResponseModelInfo{
-				Url:      baseURL + "/public/model/sapporo_1k/" + modelInfo.Filename,
+				Url:      baseURL + "/public/model/sapporo_256/" + modelInfo.Filename,
 				Lowerpos: modelInfo.Lowerpos,
 				Upperpos: modelInfo.Upperpos,
 			})
