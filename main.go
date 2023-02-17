@@ -42,7 +42,7 @@ type ResponseSearchCityModel struct {
 
 var sapporoCities CitiesJson
 
-const baseURL = "http://localhost:1323"
+const baseURL = "https://snow-globe.almikan.com"
 
 func main() {
 	initSapporoCities()
